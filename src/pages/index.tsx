@@ -4,12 +4,31 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 import Modal from "../components/Modal";
 
+interface DataUser {
+  nama: string;
+  id: number;
+  email: string;
+  status: string;
+}
+
 const index = () => {
+  const [data, setData] = useState<DataUser[]>([]);
   const [id, setid] = useState<number>();
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [status, setStatus] = useState<string>("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  function fetchData() {
+    const getUser = localStorage.getItem("UserList");
+    if (getUser) {
+      setData(JSON.parse(getUser));
+    }
+  }
 
   function submitUser() {
     const user = JSON.parse(localStorage.getItem("UserList") || "[]") || [];
@@ -97,7 +116,7 @@ const index = () => {
               Cancel
             </label>
             <button
-                onClick={submitUser}
+              onClick={submitUser}
               className="w-24 text-sm text-center border-2 border-blue-500 rounded-xl py-1 text-blue-500 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900 hover:text-white  active:scale-90 "
             >
               Submit
@@ -116,16 +135,14 @@ const index = () => {
           </thead>
           <tbody>
             <>
-              {/* {data.map((data) => (
-                    <tr>
-                      <th className="text-center">{data.id}</th>
-                      <td>{data.name}</td>
-                      <td>
-                        <img src={data.image} className="w-14 h-14"></img>
-                      </td>
-                      <td>Rp. {data.price}</td>
-                    </tr>
-                  ))} */}
+              {data.map((data) => (
+                <tr>
+                  <th className="text-center">{data.id}</th>
+                  <td>{data.nama}</td>
+                  <td>{data.email}</td>
+                  <td>{data.status}</td>
+                </tr>
+              ))}
             </>
           </tbody>
         </table>
