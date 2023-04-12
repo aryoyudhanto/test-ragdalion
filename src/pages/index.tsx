@@ -97,7 +97,7 @@ const index = () => {
               Cancel
             </label>
             <button
-              //   onClick={submitMenuResto}
+                onClick={submitUser}
               className="w-24 text-sm text-center border-2 border-blue-500 rounded-xl py-1 text-blue-500 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900 hover:text-white  active:scale-90 "
             >
               Submit
