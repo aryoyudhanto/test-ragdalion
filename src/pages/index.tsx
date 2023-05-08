@@ -17,11 +17,34 @@ const index = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [status, setStatus] = useState<string>("");
+  const [idIsCheck, setIdIsCheck] = useState<string[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  function isChecked(e: any) {
+    const { value } = e.target;
+    if (idIsCheck.includes(value)) {
+      setIdIsCheck(idIsCheck.filter((checked_name) => checked_name != value));
+    } else {
+      idIsCheck.push(value);
+      setIdIsCheck([...idIsCheck]);
+    }
+  }
+  console.log("cek: ", idIsCheck);
+
+function updateActive(){
+  data.forEach(element => {
+    if(idIsCheck.includes(String(element.id))){
+      element.status = "active"
+    }
+  });
+
+  setData([...data])
+  localStorage.setItem("UserList", JSON.stringify(data));
+}
 
   function fetchData() {
     const getUser = localStorage.getItem("UserList");
@@ -131,6 +154,8 @@ const index = () => {
               <th className="text-lg capitalize">Nama</th>
               <th className="text-lg capitalize">Email</th>
               <th className="text-lg capitalize">Status</th>
+              <th className="text-lg capitalize">Action</th>
+              <th className="text-lg capitalize">Add</th>
             </tr>
           </thead>
           <tbody>
@@ -141,9 +166,31 @@ const index = () => {
                   <td>{data.nama}</td>
                   <td>{data.email}</td>
                   <td>{data.status}</td>
+                  <td>
+                    <button
+                      // onClick={}
+                      className="w-24 text-sm text-center border-2 border-blue-500 rounded-xl py-1 text-blue-500 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900 hover:text-white  active:scale-90 "
+                    >
+                      Update
+                    </button>
+                  </td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      className="checkbox"
+                      onChange={(e) => isChecked(e)}
+                      value={data.id}
+                    />
+                  </td>
                 </tr>
               ))}
             </>
+            <button
+              onClick={()=>updateActive()}
+              className="  text-sm text-center border-2 border-blue-500 rounded-xl py-1 text-blue-500 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900 hover:text-white  active:scale-90 "
+            >
+              Update Multiple Active
+            </button>
           </tbody>
         </table>
       </div>
